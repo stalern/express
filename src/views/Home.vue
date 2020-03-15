@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Aladdin logo" src="../assets/aladdin.jpg">
+    <index msg="Welcome to Aladdin Express"/>
   </div>
+
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import index from '../components/Index'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    index
   }
 }
 </script>
+
+<style>
+  img {
+    margin-top: 70px;
+    width: 500px;
+  }
+</style>
