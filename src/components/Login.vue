@@ -29,7 +29,6 @@
     import { mapActions } from 'vuex'
     import userApi from '../api/user'
     import store from '../store/store'
-    import router from '../router/router'
     export default {
         name: "login",
         data () {
@@ -39,9 +38,7 @@
                 } else {
                     cb()
                 }
-
             };
-
             let checkPassword = (rule, value, cb) => {
                 if (!value) {
                     return cb(new Error('密码不能为空!'))
@@ -49,7 +46,6 @@
                     cb()
                 }
             };
-
             return {
                 formLogin: {
                     name: '',
@@ -80,17 +76,10 @@
                     if (valid) {
                         // 通过验证之后才请求登录接口
                         userApi.login(formData.name, formData.password).then(function (response) {
-                            if (response.data !== 'false') {
-                                let data = {
-                                    role: 'ADMIN',
-                                    token: response.data === 'false' ? '' : response.data,
-                                    name: formData.name
-                                };
-                                store.commit('Login.vue', data);
-                                router.push({
-                                    path: '/admin/index'
-                                });
-                                location.reload()
+                            if (response.data.code === 1) {
+                                let token = response.data.data.token;
+                                store.commit('Login', token);
+                                store.commit('changeFlag', false);
                             } else {
                                 _this.$message.error('表单验证失败!');
                                 return false

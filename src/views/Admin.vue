@@ -5,13 +5,14 @@
 
 <script>
     import Login from "../components/Login";
+    import store from '../store/store';
     import Control from "../components/Control";
     export default {
         name: "Admin",
         components: {Control, Login},
         data() {
             return {
-                flag: false
+                flag: store.state.loginFlag
             }
         }
     }

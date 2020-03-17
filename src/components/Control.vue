@@ -3,29 +3,24 @@
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <el-table
-                        :data="tableData"
+                        :data="user"
                         style="width: 200%"
-                        height="600px"
-                        max-height="600px">
+                        height="550px"
+                        max-height="550px">
                     <el-table-column
                             fixed
-                            prop="date"
-                            label="最近登录日期"
-                            width="150">
-                    </el-table-column>
-                    <el-table-column
                             prop="name"
                             label="姓名"
                             width="120">
                     </el-table-column>
                     <el-table-column
-                            prop="province"
+                            prop="role"
                             label="角色"
                             width="120">
                     </el-table-column>
                     <el-table-column
-                            prop="city"
-                            label="市区"
+                            prop="status"
+                            label="状态"
                             width="120">
                     </el-table-column>
                     <el-table-column
@@ -34,9 +29,9 @@
                             width="300">
                     </el-table-column>
                     <el-table-column
-                            prop="zip"
+                            prop="phone"
                             label="电话"
-                            width="120">
+                            width="200">
                     </el-table-column>
                     <el-table-column
                             fixed="right"
@@ -44,7 +39,7 @@
                             width="120">
                         <template slot-scope="scope">
                             <el-button
-                                    @click.native.prevent="deleteRow(scope.$index, tableData)"
+                                    @click.native.prevent="deleteRow(scope.$index, user)"
                                     type="warning"
                                     size="small">
                                 移除
@@ -54,6 +49,9 @@
                 </el-table>
             </el-col>
         </el-row>
+        <el-pagination layout="prev, pager, next" :total="total" :current-page="page" :page-size="size"
+                       @current-change="currentChange" @prev-click="page=page-1" @next-click="page=page+1">
+        </el-pagination>
     </el-card>
 </template>
 
@@ -67,55 +65,48 @@
         },
         data() {
             return {
-                tableData: [{
-                    date: '2016-05-03',
+                user: [{
                     name: '王小虎',
-                    province: '管理员',
-                    city: '普陀区',
+                    role: '管理员',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-02',
                     name: '王小虎',
-                    province: '用户',
-                    city: '普陀区',
+                    role: '用户',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-04',
                     name: '王小虎',
-                    province: '快递员',
-                    city: '普陀区',
+                    role: '快递员',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-01',
                     name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
+                    role: '用户',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-08',
                     name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
+                    role: '用户',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-06',
                     name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
+                    role: '用户',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }, {
-                    date: '2016-05-07',
                     name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
+                    role: '用户',
+                    status: '普陀区',
                     address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
+                    phone: 200333
                 }]
             }
         }

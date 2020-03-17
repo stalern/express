@@ -29,11 +29,9 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
     response => {
         // console.log(response)
-        if (response.data === null || response.data === '') {
+        if (response.data === null || response.data.code !== 1) {
             store.commit('logout');
-            router.push({
-                path: '/login'
-            });
+            router.push('/').then(r => alert(r));
             location.reload()
         }
         return response

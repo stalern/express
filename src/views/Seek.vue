@@ -36,6 +36,7 @@
 </template>
 
 <script>
+  import express from "../api/express";
   export default {
     data() {
       return {
@@ -44,58 +45,44 @@
         tableData: [{
           date: '2016-05-03',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-02',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-04',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-01',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-08',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-06',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }, {
           date: '2016-05-07',
           name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
+          address: '上海市普陀区金沙江路 1518 弄'
         }]
       }
     },
     methods: {
       checkExpress() {
 
+          express.getExpress(this.input).then(function (response) {
+              if (response.data.data === 1) {
+                  alert("dfa")
+              } else {
+                  alert('包裹订单号不正确哦~')
+              }
+          })
       }
     }
   }
