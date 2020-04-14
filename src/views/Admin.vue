@@ -1,12 +1,12 @@
 <template>
-    <login v-if="flag" ></login>
-    <Control v-else></Control>
+    <login v-if="!flag" ></login>
+    <control v-else></control>
 </template>
 
 <script>
-    import Login from "../components/Login";
+    import Login from "../components/admin/Login";
     import store from '../store/store';
-    import Control from "../components/Control";
+    import Control from "../components/admin/Control";
     export default {
         name: "Admin",
         components: {Control, Login},

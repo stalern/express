@@ -9,8 +9,12 @@ export default {
     },
     login (username, password) {
         return request({
-            url: 'web/user/login?phone=' + username + '&pwd=' + password,
-            method: 'post'
+            url: 'web/user/login',
+            method: 'post',
+            data: {
+                'phoneNumber':username,
+                'pwd':password
+            }
         })
     },
     delete(userId) {

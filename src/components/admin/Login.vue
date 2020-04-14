@@ -16,7 +16,7 @@
                         <el-input v-model="formLogin.password"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="warning" @click="Login">登录</el-button>
+                        <el-button type="warning" @click="login">登录</el-button>
                         <el-button @click="resetForm">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -26,9 +26,9 @@
 </template>
 
 <script type="text/javascript">
-    import { mapActions } from 'vuex'
-    import userApi from '../api/user'
-    import store from '../store/store'
+    import userApi from '../../api/user'
+    import store from '../../store/store'
+    import router from '../../router/router'
     export default {
         name: "login",
         data () {
@@ -62,7 +62,6 @@
             }
         },
         methods: {
-            ...mapActions(['userLogin']),
             // 向登录接口发起请求
             login () {
                 let user = this.formLogin;
@@ -76,10 +75,12 @@
                     if (valid) {
                         // 通过验证之后才请求登录接口
                         userApi.login(formData.name, formData.password).then(function (response) {
+                            console.log(response);
                             if (response.data.code === 1) {
-                                let token = response.data.data.token;
-                                store.commit('Login', token);
+                                // let token = response.data.data.token;
+                                // store.commit('Login', token);
                                 store.commit('changeFlag', false);
+                                router.push('/');
                             } else {
                                 _this.$message.error('表单验证失败!');
                                 return false

@@ -1,21 +1,21 @@
 <template>
-    <el-card class="box-card m-padded-tb-large">
+    <el-card>
         <el-row type="flex" justify="center">
             <el-col :span="20">
                 <el-table
                         :data="user"
                         style="width: 200%"
-                        height="550px"
-                        max-height="550px">
+                        height="522px"
+                        max-height="522px">
                     <el-table-column
                             fixed
                             prop="name"
-                            label="姓名"
+                            label="名称"
                             width="120">
                     </el-table-column>
                     <el-table-column
                             prop="role"
-                            label="角色"
+                            label="员工数量"
                             width="120">
                     </el-table-column>
                     <el-table-column
@@ -56,59 +56,66 @@
 </template>
 
 <script>
+    import user from "../../../api/user";
     export default {
-        name: 'Control',
-        methods: {
-            deleteRow(index, rows) {
-                rows.splice(index, 1);
-            }
-        },
+        name: "Transnode",
         data() {
             return {
                 user: [{
-                    name: '王小虎',
-                    role: '管理员',
-                    status: '普陀区',
+                    name: '王大虎',
+                    role: '1',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '用户',
-                    status: '普陀区',
+                    role: '3',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '快递员',
-                    status: '普陀区',
+                    role: '5',
+                    status: '关门',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '用户',
-                    status: '普陀区',
+                    role: '2',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '用户',
-                    status: '普陀区',
+                    role: '5',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '用户',
-                    status: '普陀区',
+                    role: '10',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }, {
                     name: '王小虎',
-                    role: '用户',
-                    status: '普陀区',
+                    role: '6',
+                    status: '工作中',
                     address: '上海市普陀区金沙江路 1518 弄',
                     phone: 200333
                 }]
             }
+        },
+        methods: {
+            listUser(page, size) {
+                user.listUser(page, size).then(function (response) {
+                    response
+                })
+            }
         }
     }
 </script>
+
+<style scoped>
+
+</style>

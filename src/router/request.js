@@ -1,6 +1,6 @@
 import axios from 'axios'
-import store from '../store/store'
-import router from './router'
+// import store from '../store/store'
+// import router from './router'
 
 const service = axios.create({
     baseURL: '/api', // api的base_url
@@ -28,12 +28,12 @@ service.interceptors.request.use(config => {
 // response拦截器
 service.interceptors.response.use(
     response => {
-        // console.log(response)
-        if (response.data === null || response.data.code !== 1) {
-            store.commit('logout');
-            router.push('/').then(r => alert(r));
-            location.reload()
-        }
+        // console.log(response);
+        // if (response.data === null || response.data.code !== 1) {
+        //     store.commit('logout');
+        //     router.push('/').then(r => alert(r));
+        //     location.reload()
+        // }
         return response
     }
 );

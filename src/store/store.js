@@ -6,9 +6,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     token: '',
-    loginFlag: false
+    loginFlag: true
   },
   mutations: {
+
     login (state, data) {
       // 变更状态
       this.state.token = data;
@@ -17,10 +18,10 @@ export default new Vuex.Store({
     logout () {
       localStorage.removeItem('token');
       this.state.token = '';
-      this.loginFlag = true;
+      this.state.loginFlag = true;
     },
     changeFlag(state, data) {
-      this.loginFlag = data;
+      this.state.loginFlag = data;
     }
   },
   actions: {
