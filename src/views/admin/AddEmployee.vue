@@ -1,5 +1,5 @@
 <template>
-    <el-card>
+    <el-card style="margin-top: 30px">
         <el-card style="margin: 98px 350px 98px 350px;">
             <el-row type="flex" justify="center">
                 <el-col span="18">
@@ -35,7 +35,7 @@
 
 <script>
     export default {
-        name: "AddUser",
+        name: "AddEmployee",
         data() {
             return {
                 form: {

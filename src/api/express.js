@@ -1,4 +1,4 @@
-import request from '../router/request'
+import request from '../util/request'
 
 export default {
     getExpress (id) {

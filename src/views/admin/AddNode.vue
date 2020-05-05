@@ -1,4 +1,5 @@
 <template>
+    <el-container style="margin-top: 30px">
     <el-card>
         <el-row>
             <el-amap style="height: 550px; width: 1440px;" vid="amapDemo"
@@ -42,6 +43,7 @@
         <!--            position: [{{ lng }}, {{ lat }}] address: {{ address }}, {{province}}/{{city}}/{{district}}-->
         <!--        </div>-->
     </el-card>
+    </el-container>
 </template>
 
 <script>

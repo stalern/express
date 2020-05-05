@@ -5,8 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    token: '',
-    loginFlag: true
+    token: ''
   },
   mutations: {
 
@@ -18,10 +17,6 @@ export default new Vuex.Store({
     logout () {
       localStorage.removeItem('token');
       this.state.token = '';
-      this.state.loginFlag = true;
-    },
-    changeFlag(state, data) {
-      this.state.loginFlag = data;
     }
   },
   actions: {
