@@ -1,23 +1,28 @@
 <template>
     <el-container style="margin-top: 10px;">
-        <el-aside width="120px">
-            <el-button style="margin-top: 100px" @click="open">按发件人查</el-button>
+        <el-aside width="110px">
+            <el-button type="success" style="margin-top: 100px">按发件查</el-button>
             <br/>
-            <el-button class="mar">按收件人查</el-button>
-            <el-button class="mar">按包裹查</el-button>
+            <el-button type="primary" class="mar">按收件人</el-button>
+            <el-button type="warning" class="mar" @click="open">按包裹查</el-button>
         </el-aside>
         <el-main>
             <el-card>
                 <el-row type="flex" justify="center">
                     <el-col :span="22">
                         <el-table
-                                :data="user"
+                                :data="express"
                                 style="width: 200%"
                                 height="522px"
                                 max-height="522px">
                             <el-table-column
                                     fixed
-                                    prop="sender"
+                                    prop="id"
+                                    label="订单号"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="senderId"
                                     label="发件人"
                                     width="120">
                             </el-table-column>
@@ -37,27 +42,27 @@
                                     width="100">
                             </el-table-column>
                             <el-table-column
-                                    prop="receiver"
+                                    prop="receiverId"
                                     label="收件人"
                                     width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="senderAddr"
+                                    prop="senderAddress"
                                     label="发件人地址"
                                     width="250">
                             </el-table-column>
                             <el-table-column
-                                    prop="receiverAddr"
+                                    prop="receiverAddress"
                                     label="收件人地址"
                                     width="250">
                             </el-table-column>
                             <el-table-column
-                                    prop="senderNumber"
+                                    prop="senderPhoneNumber"
                                     label="发件人电话"
                                     width="200">
                             </el-table-column>
                             <el-table-column
-                                    prop="receiverNumber"
+                                    prop="receiverPhoneNumber"
                                     label="收件人电话"
                                     width="200">
                             </el-table-column>
@@ -96,126 +101,62 @@
 </template>
 
 <script>
-    import user from '../../api/user';
+    import express from '../../api/express';
     export default {
         name: "Express",
         data() {
             return {
-                user: [ {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }, {
-                    sender: '王星星',
-                    receiver: '吕俊桥',
-                    senderNumber: '12365478963',
-                    receiverNumber: '12365478963',
-                    senderAddr: '北京市北京市海淀区白家疃',
-                    receiverAddr: '郑州大学',
-                    weight: '40',
-                    cost: '100',
-                    status: '运输中',
-                    beginTime: '2020-04-26 14:23:33',
-                    endTime: '无'
-                }]
+                total : 0,
+                page: 1,
+                size: 8,
+                express: []
             }
         },
         methods: {
-            listUser(page, size) {
-                user.listUser(page, size).then(function (response) {
-                    response
+            listExpress(page, size) {
+                let _this = this;
+                express.listExpress(page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.express = data.obj;
+                })
+            },
+            listExpressInNode(node, page, size) {
+                let _this = this;
+                express.listExpressInPackage(node, page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.user = data.obj;
+                })
+            },
+            currentChange (page) {
+                this.page = page;
+                this.listExpress(page, this.size);
+                scrollTo(0, 0)
+            },
+            deleteRow(index, expressId) {
+                this.express.splice(index, 1);
+                let _this = this;
+                express.delete(expressId).then(function () {
+                    _this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
                 })
             },
             open() {
-                this.$prompt('请输入邮箱', '提示', {
+                this.$prompt('请输入包裹Id', '提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-                    inputErrorMessage: '邮箱格式不正确'
+                    cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.listExpressInNode(value, this.page, this.size);
                     this.$message({
                         type: 'success',
-                        message: '你的邮箱是: ' + value
+                        message: '获取数据成功'
                     });
                 }).catch(() => {
                     this.$message({
@@ -224,6 +165,9 @@
                     });
                 });
             }
+        },
+        mounted() {
+            this.listExpress(this.page, this.size)
         }
     }
 </script>

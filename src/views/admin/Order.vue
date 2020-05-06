@@ -15,7 +15,7 @@
         <el-card v-if="!flag" style="margin: 98px 350px 98px 350px;">
             <el-row type="flex" justify="center" style="height: 310px">
                 <!--                    <span class="title">{{ input }}的二维码</span>-->
-                <el-avatar shape="square" :size="310" :src="url"></el-avatar>
+                <img style="height: 134px; width: 78px;" :src="url"/>
             </el-row>
         </el-card>
     </el-card>
@@ -28,7 +28,7 @@
             return {
                 flag: true,
                 input: '',
-                url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+                url: 'https://lslwind.oss-cn-beijing.aliyuncs.com/lsl/img/19.png?Expires=1903313452&OSSAccessKeyId=LTAI4GDGXz2hj1ULHTu5DRya&Signature=2Zuazncftx2te6l1UAY9S3DgS6M%3D'
             }
         },
         methods: {

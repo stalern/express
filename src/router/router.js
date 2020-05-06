@@ -81,6 +81,11 @@ const routes = [
         path: '/layout',
         name: 'Layout',
         component: () => import('../components/layout/Index')
+    },
+    {
+        path:'*',
+        name: '404',
+        component: () => import('../views/404')
     }
 ];
 
@@ -90,4 +95,14 @@ const router = new VueRouter({
     routes
 });
 
+// router.beforeEach((to, from, next) => {
+//     // 获取用户权限信息，为空即没登录，跳转至登录页
+//     if (to.path.includes('/admin')) {
+//         let role = this.store.state.token;
+//         if (role === '') {
+//             next('/login')
+//         }
+//     }
+//     next()
+// });
 export default router

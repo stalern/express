@@ -21,13 +21,25 @@
                         width="180">
                 </el-table-column>
                 <el-table-column
+                        prop="status"
+                        label="状态"
+                        width="120">
+                </el-table-column>
+                <el-table-column
                         prop="liablePerson"
-                        label="寄件人"
+                        label="负责人"
+                        width="100">
+                </el-table-column>
+                <el-table-column
+                        prop="liablePersonPhoneNumber"
+                        label="负责人电话"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="transportNode"
-                        label="快递停靠点">
+                        prop="address"
+                        label="停靠网点"
+                        width="270"
+                >
                 </el-table-column>
             </el-table>
             <i class="el-icon-chicken" style="padding-left: 10px" @click="flag = true"></i>
@@ -57,12 +69,7 @@
                 center: [113.613, 34.7483],
                 tableData: [],
                 polyline: {
-                    path: [[113.613, 34.7483],
-                        [113.994, 32.9731],
-                        [114.651, 33.6476],
-                        [114.163, 35.9546],
-                        [115.074, 35.7773]
-                    ],
+                    path: [],
                     lineJoin: 'round',
                     events: {
                         // eslint-disable-next-line no-unused-vars
@@ -83,10 +90,16 @@
                 this.flag = !this.flag;
                 let _this = this;
                 express.getExpress(this.input).then(function (response) {
-                    if (response.data.code === 1) {
-                        _this.tableData = response.data.data.expressLocationVO;
-                    } else {
-                        alert('包裹订单号不正确哦~');
+                    let data = response.data.data;
+                    _this.tableData = data;
+                    console.log(data);
+                    for (let i = 0; i < data.length; i ++) {
+                        let arr = [];
+                        if (data[i].x !== null && data[i].y !== null) {
+                            arr.push(data[i].x);
+                            arr.push(data[i].y);
+                            _this.polyline.path.push(arr)
+                        }
                     }
                 })
             }

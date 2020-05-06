@@ -24,9 +24,6 @@
             }
         },
         methods: {
-            deleteRow(index, rows) {
-                rows.splice(index, 1);
-            },
             changeRouter(path) {
                 router.push(path)
             }

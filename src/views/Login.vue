@@ -18,7 +18,8 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="warning" @click="login">登录</el-button>
-                        <el-button @click="resetForm">取消</el-button>
+                        <el-button type="info" @click="resetForm">取消</el-button>
+                        <el-button type="success" @click="back">返回</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -33,86 +34,82 @@
 </template>
 
 <script type="text/javascript">
-    // import userApi from '../api/user'
-    // import store from '../store/store'
+    import userApi from '../api/user'
+    import store from '../store/store'
     import router from '../router/router'
     export default {
         name: "login",
         data () {
-            // let checkUserName = (rule, value, cb) => {
-            //     if (!value) {
-            //         return cb(new Error('账户不能为空!'))
-            //     } else {
-            //         cb()
-            //     }
-            // };
-            // let checkPassword = (rule, value, cb) => {
-            //     if (!value) {
-            //         return cb(new Error('密码不能为空!'))
-            //     } else {
-            //         cb()
-            //     }
-            // };
+            let checkUserName = (rule, value, cb) => {
+                if (!value) {
+                    return cb(new Error('账户不能为空!'))
+                } else {
+                    cb()
+                }
+            };
+            let checkPassword = (rule, value, cb) => {
+                if (!value) {
+                    return cb(new Error('密码不能为空!'))
+                } else {
+                    cb()
+                }
+            };
             return {
                 formLogin: {
                     name: '',
                     password: ''
                 },
                 rules: {
-                    // name: [
-                    //     { validator: checkUserName, trigger: 'blur' }
-                    // ],
-                    // password: [
-                    //     { validator: checkPassword, trigger: 'blur' }
-                    // ]
+                    name: [
+                        { validator: checkUserName, trigger: 'blur' }
+                    ],
+                    password: [
+                        { validator: checkPassword, trigger: 'blur' }
+                    ]
                 }
             }
         },
         methods: {
             // 向登录接口发起请求
             login () {
-                // let user = this.formLogin;
-                // let formData = {
-                //     name: user.name,
-                //     password: user.password
-                // };
-                // let _this = this;
-                // // 表单验证
-                // this.$refs['formLogin'].validate((valid) => {
-                //     if (valid) {
-                //         // 通过验证之后才请求登录接口
-                //         userApi.login(formData.name, formData.password).then(function (response) {
-                //             console.log(response);
-                //             if (response.data.code === 1) {
-                //                 // let token = response.data.data.token;
-                //                 // store.commit('Login', token);
-                //                 store.commit('changeFlag', false);
-                //                 router.push('/');
-                //             } else {
-                //                 _this.$message.error('表单验证失败!');
-                //                 return false
-                //             }
-                //         })
-                //     } else {
-                //         this.$message.error('表单验证失败!');
-                //         return false
-                //     }
-                // })
-                router.push('/admin')
+                let user = this.formLogin;
+                let formData = {
+                    name: user.name,
+                    password: user.password
+                };
+                let _this = this;
+                // 表单验证
+                this.$refs['formLogin'].validate((valid) => {
+                    if (valid) {
+                        // 通过验证之后才请求登录接口
+                        userApi.login(formData.name, formData.password).then(function (response) {
+                            console.log(response);
+                            if (response.data.code === 1) {
+                                let token = response.data.data.key;
+                                store.commit('login', token);
+                                router.push('/admin');
+                            } else {
+                                _this.$message.error('表单验证失败!');
+                                return false
+                            }
+                        })
+                    } else {
+                        this.$message.error('表单验证失败!');
+                        return false
+                    }
+                })
             },
             // 表单重置
             resetForm () {
                 // console.log('session')
                 this.$refs['formLogin'].resetFields()
+            },
+            back() {
+                router.push('/index')
             }
         }
     }
 </script>
 
 <style scoped>
-    .m-padded-tb-large{
-        margin-top: 40px;
-        padding-top: 10em;
-        padding-bottom: 10em;
-    }
 </style>

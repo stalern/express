@@ -20,14 +20,14 @@
                                     width="300">
                             </el-table-column>
                             <el-table-column
-                                    prop="phone"
+                                    prop="phoneNumber"
                                     label="电话"
                                     width="200">
                             </el-table-column>
                             <el-table-column
-                                    prop="pwd"
+                                    prop="password"
                                     label="密码"
-                                    width="200">
+                                    width="270">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -60,55 +60,33 @@
         name: "User",
         data() {
             return {
-                user: [{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                },{
-                    name: '王小虎',
-                    pwd: 'fjasofijsdofjadfjas12',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    phone: 15236974236
-                }]
+                total : 0,
+                page: 1,
+                size: 8,
+                user: []
             }
         },
         methods: {
             listUser(page, size) {
+                let _this = this;
                 user.listUser(page, size).then(function (response) {
-                    response
+                    let data = response.data.data;
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.user = data.obj;
                 })
+            },
+            currentChange (page) {
+                this.page = page;
+                this.listUser(page, this.size);
+                scrollTo(0, 0)
+            },
+            deleteRow() {
+
             }
+        },
+        mounted() {
+            this.listUser(this.page, this.size)
         }
     }
 </script>

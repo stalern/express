@@ -23,7 +23,7 @@
             </el-row>
             <el-card style="margin: 60px 350px 98px 350px;">
                 <el-row type="flex" justify="center">
-                    <el-col span="18">
+                    <el-col :span="18">
                         <el-form ref="form" :model="form" label-width="80px">
                             <el-form-item label="网点地址">
                                 <el-input v-model="form.address"></el-input>

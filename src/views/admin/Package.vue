@@ -8,18 +8,23 @@
                 <el-row type="flex" justify="center">
                     <el-col :span="22">
                         <el-table
-                                :data="user"
+                                :data="packages"
                                 style="width: 200%"
                                 height="522px"
                                 max-height="522px">
                             <el-table-column
                                     fixed
-                                    prop="name"
+                                    prop="id"
+                                    label="包裹ID"
+                                    width="100">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="personLiableId"
                                     label="负责人"
                                     width="100">
                             </el-table-column>
                             <el-table-column
-                                    prop="num"
+                                    prop="expressCount"
                                     label="快件数量"
                                     width="100">
                             </el-table-column>
@@ -29,12 +34,12 @@
                                     width="120">
                             </el-table-column>
                             <el-table-column
-                                    prop="sendAdd"
+                                    prop="senderTransportNodeId"
                                     label="发送网点"
                                     width="250">
                             </el-table-column>
                             <el-table-column
-                                    prop="recAdd"
+                                    prop="receiverTransportNodeId"
                                     label="接收网点"
                                     width="250">
                             </el-table-column>
@@ -54,7 +59,7 @@
                                     width="100">
                                 <template slot-scope="scope">
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, user)"
+                                            @click.native.prevent="deleteRow(scope.$index)"
                                             type="danger"
                                             size="small">
                                         移除
@@ -73,7 +78,7 @@
 </template>
 
 <script>
-    import user from '../../api/user';
+    import express from "../../api/express";
     export default {
         name: "Package",
         data() {
@@ -81,63 +86,7 @@
                 total: 20,
                 page:2,
                 size:8,
-                user: [{
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }, {
+                packages: [{
                     name: '王小虎',
                     status: '已拆包',
                     sendAdd: '北京市市辖区东城区',
@@ -149,21 +98,43 @@
             }
         },
         methods: {
-            listUser(page, size) {
-                user.listUser(page, size).then(function (response) {
-                    response
+            listPackage(page, size) {
+                let _this = this;
+                express.listPackage(page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.packages = data.obj;
                 })
             },
+            listPackageInNode(node, page, size) {
+                let _this = this;
+                express.listPackageInNode(node, page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.packages = data.obj;
+                })
+            },
+            currentChange (page) {
+                this.page = page;
+                this.listPackage(page, this.size);
+                scrollTo(0, 0)
+            },
+            deleteRow(index) {
+                this.packages.splice(index, 1);
+            },
             open() {
-                this.$prompt('请输入邮箱', '提示', {
+                this.$prompt('请输入网点', '提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-                    inputErrorMessage: '邮箱格式不正确'
+                    cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.listPackageInNode(value, 1, this.size);
                     this.$message({
                         type: 'success',
-                        message: '你的邮箱是: ' + value
+                        message: '获取数据成功'
                     });
                 }).catch(() => {
                     this.$message({
@@ -172,6 +143,9 @@
                     });
                 });
             }
+        },
+        mounted() {
+            this.listPackage(this.page, this.size)
         }
     }
 </script>

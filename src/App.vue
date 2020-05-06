@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <router-view/>
+    <a style="position: absolute;
+    top: 95%;
+    left: 43.5%;
+       ">©Copyright 2020 软卓三组™</a>
   </div>
 </template>
 

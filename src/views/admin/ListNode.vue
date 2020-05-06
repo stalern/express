@@ -5,7 +5,7 @@
                 <el-row type="flex" justify="center">
                     <el-col :span="20">
                         <el-table
-                                :data="user"
+                                :data="node"
                                 style="width: 100%"
                                 height="522px"
                                 max-height="522px">
@@ -23,7 +23,7 @@
                             <el-table-column
                                     prop="region"
                                     label="地址"
-                                    width="200">
+                                    width="270">
                             </el-table-column>
                             <el-table-column
                                     prop="phoneNumber"
@@ -47,7 +47,7 @@
                             width="120">
                                 <template slot-scope="scope">
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, user)"
+                                            @click.native.prevent="deleteRow(scope.$index, scope.row.id)"
                                             type="danger"
                                             size="small">
                                         移除
@@ -66,77 +66,47 @@
 </template>
 
 <script>
-    import user from "../../api/user";
+    import node from "../../api/transnode";
 
     export default {
         name: "Transnode",
         data() {
             return {
-                user: [{
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市市辖区黄浦区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }, {
-                    address: '王大虎快递网点',
-                    num: '10',
-                    region: '上海市普陀区',
-                    phoneNumber: 15263987456,
-                    x: 120.2,
-                    y: 109
-                }]
+                total : 0,
+                page: 1,
+                size: 8,
+                node: []
             }
         },
         methods: {
-            listUser(page, size) {
-                user.listUser(page, size).then(function (response) {
-                    response
+            listNode(page, size) {
+                let _this = this;
+                node.listNode(page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.node = data.obj;
+                })
+            },
+            currentChange (page) {
+                this.page = page;
+                this.listNode(page, this.size);
+                scrollTo(0, 0)
+            },
+            deleteRow(index, nodeId) {
+                this.node.splice(index, 1);
+                let _this = this;
+                node.deleteNode(nodeId).then(function () {
+                    _this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
                 })
             }
+        },
+        mounted() {
+            this.listNode(this.page, this.size);
         }
     }
 </script>

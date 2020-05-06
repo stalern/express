@@ -2,8 +2,8 @@
   <div class="home">
     <img alt="Aladdin logo" src="../assets/aladdin.jpg">
     <h1 style="margin-top: 50px;">Welcome to Aladdin Express</h1>
-    <p>
-      <el-button style="margin-top: 20px;" type="success" icon="el-icon-map-location" @click="drawer = true">查看网点
+    <p style="margin-bottom: 30px">
+      <el-button style="margin-top: 20px;" type="success" icon="el-icon-map-location" @click="listNode">查看网点
       </el-button>
       <el-button style="margin-top: 20px;" type="warning" icon="el-icon-connection" @click="seek">查询快递
       </el-button>
@@ -17,7 +17,7 @@
             size="90%">
       <el-amap style="margin: 20px 20px 20px 20px" :center="center" :zoom="5">
         <el-amap-marker v-for="(marker,index) in markers" :position="marker.position" :content="content"
-                        :title="title"
+                        :title="marker.title"
                         :key="index"></el-amap-marker>
       </el-amap>
     </el-drawer>
@@ -33,52 +33,51 @@
 
 <script>
 // @ is an alias to /src
-// import index from '../components/Index'
 import router from '../router/router'
+import store from "../store/store";
+import node from "../api/transnode";
 export default {
   name: 'Home',
-  // components: {
-  //   index
-  // }
   data() {
     return {
       drawer: false,
       direction: 'btt',
       center: [113.613, 34.7483],
-      title: '1',
-      content: '<div style="text-align:center; background-color: hsla(180, 100%, 50%, 0.7); height: 12px; width: 12px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0 0 1px;"></div>',
-      markers: null
+      content: '<div style="text-align:center; background-color: hsla(112,100%,70%,0.7); height: 6px; width: 6px; border: 1px solid hsl(5,60%,50%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0 0 1px;"></div>',
+      markers: []
     };
-  },
-  created() {
-    let markers = [];
-    markers.push({
-      position: [113.994, 32.9731]
-    });
-    markers.push({
-      position:
-              [114.651, 33.6476]
-    });
-    markers.push({
-      position:
-              [114.163, 35.9546]
-    });
-    markers.push({
-      position:
-              [115.074, 35.7773]
-    });
-
-    this.markers = markers;
   },
   methods: {
     login() {
-      router.push({
-        path: '/login'
-      })
+      if(store.state.token !== '') {
+        router.push({
+          path: '/admin'
+        })
+      } else {
+        router.push({
+          path: '/login'
+        })
+      }
     },
     seek() {
       router.push({
         path: '/seek'
+      })
+    },
+    listNode() {
+      this.drawer = true;
+      let _this = this;
+      node.listAllNode().then(function (response) {
+        let data = response.data.data;
+        console.log(data);
+        for (let i = 0; i < data.length; i ++) {
+          if (data[i].x !== null && data[i].y !== null) {
+            _this.markers.push({
+              position: [data[i].x, data[i].y],
+              title: data[i].region
+            });
+          }
+        }
       })
     }
   }

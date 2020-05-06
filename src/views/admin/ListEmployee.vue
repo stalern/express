@@ -21,22 +21,27 @@
                             <el-table-column
                                     prop="status"
                                     label="状态"
-                                    width="120">
+                                    width="100">
                             </el-table-column>
                             <el-table-column
-                                    prop="address"
+                                    prop="gender"
+                                    label="性别"
+                                    width="100">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="workTransnode"
                                     label="工作网点"
-                                    width="200">
+                                    width="300">
                             </el-table-column>
                             <el-table-column
-                                    prop="phone"
+                                    prop="phoneNumber"
                                     label="电话"
                                     width="200">
                             </el-table-column>
                             <el-table-column
-                                    prop="pwd"
+                                    prop="password"
                                     label="密码"
-                                    width="220">
+                                    width="270">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -44,13 +49,12 @@
                                     width="200">
                                 <template slot-scope="scope">
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, user)"
                                             type="warning"
                                             size="small">
                                         编辑
                                     </el-button>
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, user)"
+                                            @click.native.prevent="deleteRow(scope.$index, scope.row.id)"
                                             type="danger"
                                             size="small">
                                         移除
@@ -74,64 +78,46 @@
         name: "ListEmployee",
         data() {
             return {
-                total: 20,
-                page:2,
-                size:8,
-                user: [{
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }, {
-                    name: '王小虎',
-                    pwd: '52fdsa5sd6afd2sf2',
-                    status: '工作中',
-                    address: '上海市普陀区金沙江路 ',
-                    phone: 15269874532
-                }]
+                total : 0,
+                page: 1,
+                size: 8,
+                user: []
             }
         },
         methods: {
             listUser(page, size) {
-                user.listUser(page, size).then(function (response) {
-                    response
+                let _this = this;
+                user.listEmployee(page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.user = data.obj;
+                })
+            },
+            listUserInNode(node, page, size) {
+                let _this = this;
+                user.listEmployeeInNode(node, page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.user = data.obj;
+                })
+            },
+            currentChange (page) {
+                this.page = page;
+                this.listUser(page, this.size);
+                scrollTo(0, 0)
+            },
+            deleteRow(index, userId) {
+                this.user.splice(index, 1);
+                let _this = this;
+                user.delete(userId).then(function () {
+                    _this.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
                 })
             },
             open() {
@@ -139,9 +125,10 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.listUserInNode(value, this.page, this.size);
                     this.$message({
                         type: 'success',
-                        message: '你的网点是: ' + value
+                        message: '获取数据成功'
                     });
                 }).catch(() => {
                     this.$message({
@@ -150,6 +137,9 @@
                     });
                 });
             }
+        },
+        mounted() {
+            this.listUser(this.page, this.size)
         }
     }
 </script>
