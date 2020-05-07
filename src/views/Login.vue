@@ -85,7 +85,7 @@
                         userApi.login(formData.name, formData.password).then(function (response) {
                             console.log(response);
                             if (response.data.code === 1) {
-                                let token = response.data.data.key;
+                                let token = response.data.data;
                                 store.commit('login', token);
                                 router.push('/admin');
                             } else {

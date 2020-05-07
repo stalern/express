@@ -1,10 +1,10 @@
 <template>
     <el-container style="margin-top: 10px;">
         <el-aside width="110px">
-            <el-button type="success" style="margin-top: 100px">按发件查</el-button>
+            <el-button type="success" style="margin-top: 100px" @click="openSender">按发件人</el-button>
             <br/>
-            <el-button type="primary" class="mar">按收件人</el-button>
-            <el-button type="warning" class="mar" @click="open">按包裹查</el-button>
+            <el-button type="primary" class="mar" @click="openRec">按收件人</el-button>
+            <el-button type="warning" class="mar" @click="openPackage">按包裹查</el-button>
         </el-aside>
         <el-main>
             <el-card>
@@ -49,12 +49,12 @@
                             <el-table-column
                                     prop="senderAddress"
                                     label="发件人地址"
-                                    width="250">
+                                    width="300">
                             </el-table-column>
                             <el-table-column
                                     prop="receiverAddress"
                                     label="收件人地址"
-                                    width="250">
+                                    width="300">
                             </el-table-column>
                             <el-table-column
                                     prop="senderPhoneNumber"
@@ -69,12 +69,12 @@
                             <el-table-column
                                     prop="beginTime"
                                     label="揽收时间"
-                                    width="200">
+                                    width="250">
                             </el-table-column>
                             <el-table-column
                                     prop="endTime"
                                     label="结束时间"
-                                    width="200">
+                                    width="250">
                             </el-table-column>
                             <el-table-column
                                     fixed="right"
@@ -109,6 +109,8 @@
                 total : 0,
                 page: 1,
                 size: 8,
+                type: 0, // 0代表listExpress，1代表inNode, 2代表bySender, 3代表byReceiver
+                value:'',
                 express: []
             }
         },
@@ -130,12 +132,40 @@
                     console.log(data);
                     _this.total = data.totalNum;
                     _this.page = data.currPage;
-                    _this.user = data.obj;
+                    _this.express = data.obj;
+                })
+            },
+            listExpressBySender(senderId, page, size) {
+                let _this = this;
+                express.listExpressBySender(senderId, page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.express = data.obj;
+                })
+            },
+            listExpressByReceiver(receiverId, page, size) {
+                let _this = this;
+                express.listExpressByReceiver(receiverId, page, size).then(function (response) {
+                    let data = response.data.data;
+                    console.log(data);
+                    _this.total = data.totalNum;
+                    _this.page = data.currPage;
+                    _this.express = data.obj;
                 })
             },
             currentChange (page) {
                 this.page = page;
-                this.listExpress(page, this.size);
+                if (this.type === 0) {
+                    this.listExpress(page, this.size);
+                } else if (this.type === 1) {
+                    this.listExpressInNode(this.value, this.page, this.size);
+                } else if (this.type === 2) {
+                    this.listExpressBySender(this.value, this.page, this.size);
+                } else if (this.type === 3) {
+                    this.listExpressByReceiver(this.value, this.page, this.size);
+                }
                 scrollTo(0, 0)
             },
             deleteRow(index, expressId) {
@@ -148,12 +178,55 @@
                     });
                 })
             },
-            open() {
+            openPackage() {
                 this.$prompt('请输入包裹Id', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.page = 1;
+                    this.type = 1;
+                    this.value = value;
                     this.listExpressInNode(value, this.page, this.size);
+                    this.$message({
+                        type: 'success',
+                        message: '获取数据成功'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            openSender() {
+                this.$prompt('请输入用户ID', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(({ value }) => {
+                    this.page = 1;
+                    this.type = 2;
+                    this.value = value;
+                    this.listExpressBySender(value, this.page, this.size);
+                    this.$message({
+                        type: 'success',
+                        message: '获取数据成功'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            openRec() {
+                this.$prompt('请输入用户Id', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(({ value }) => {
+                    this.page = 1;
+                    this.type = 3;
+                    this.value = value;
+                    this.listExpressByReceiver(value, this.page, this.size);
                     this.$message({
                         type: 'success',
                         message: '获取数据成功'

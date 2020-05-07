@@ -1,11 +1,14 @@
 <template>
     <div class="amap-page-container">
-        <el-amap vid="amap" :zoom="zoom" :center="center" class="amap-demo" style="height: 500px; width: 500px">
-            <el-amap-polyline :editable="polyline.editable"  :path="polyline.path" :events="polyline.events"></el-amap-polyline>
+        <el-amap
+                vid="amapDemo"
+                :center="center"
+                :zoom="zoom"
+                class="amap-demo"
+                :events="events">
         </el-amap>
-
         <div class="toolbar">
-            <button type="button" name="button" v-on:click="changeEditable">change editable</button>
+            position: [{{ lng }}, {{ lat }}] address: {{ address }}
         </div>
     </div>
 </template>
@@ -13,35 +16,43 @@
 <style>
     .amap-demo {
         height: 300px;
+        width: 300px;
     }
 </style>
 
 <script>
     export default {
         data() {
+            let self = this;
             return {
                 zoom: 12,
-                center: [121.5273285, 31.25515044],
-                polyline: {
-                    path: [[121.5389385, 31.21515044], [121.5389385, 31.29615044], [121.5273285, 31.21515044]],
-                    events: {
-                        // eslint-disable-next-line no-unused-vars
-                        click(e) {
-                            alert('click polyline');
-                        },
-                        end: (e) => {
-                            let newPath = e.target.getPath().map(point => [point.lng, point.lat]);
-                            console.log(newPath);
-                        }
-                    },
-                    editable: false
-                }
+                center: [121.59996, 31.197646],
+                address: '',
+                events: {
+                    click(e) {
+                        let { lng, lat } = e.lnglat;
+                        self.lng = lng;
+                        self.lat = lat;
+
+                        // 这里通过高德 SDK 完成。
+                        // eslint-disable-next-line no-undef
+                        var geocoder = new AMap.Geocoder({
+                            radius: 1000,
+                            extensions: "all"
+                        });
+                        geocoder.getAddress([lng ,lat], function(status, result) {
+                            if (status === 'complete' && result.info === 'OK') {
+                                if (result && result.regeocode) {
+                                    self.address = result.regeocode.formattedAddress;
+                                    self.$nextTick();
+                                }
+                            }
+                        });
+                    }
+                },
+                lng: 0,
+                lat: 0
             };
-        },
-        methods: {
-            changeEditable() {
-                this.polyline.editable = !this.polyline.editable;
-            }
         }
     };
 </script>

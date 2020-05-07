@@ -2,7 +2,7 @@ import request from '../util/request'
 
 let path = '/web/express';
 export default {
-    getExpress (id) {
+    getExpressLocation (id) {
         return request({
             url: path + '/getExpressLocation/' + id,
             method: 'get'
@@ -40,9 +40,14 @@ export default {
     },
     listExpressByReceiver (receiverId, page, size) {
         return request({
-            url: path + '/getExpressBySender/' + receiverId + '?page=' + page + '&size=' + size,
+            url: path + '/getExpressByReceiver/' + receiverId + '?page=' + page + '&size=' + size,
             method: 'get'
         })
     },
-
+    getExpress(id) {
+        return request({
+            url: path + '/getExpressById/' + id,
+            method: 'get'
+        })
+    }
 }

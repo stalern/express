@@ -55,6 +55,7 @@
 <script>
     import router from '../../router/router'
     import store from '../../store/store'
+    import user from "../../api/user";
     export default {
         name: "AppHeader",
         data() {
@@ -87,6 +88,7 @@
                 }else if (path === 7) {
                     path = '/admin/order'
                 } else if (path === 'logout') {
+                    user.logout();
                     path = '/index';
                     store.commit('logout');
                 }

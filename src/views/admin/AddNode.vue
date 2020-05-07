@@ -4,9 +4,8 @@
         <el-row>
             <el-amap style="height: 550px; width: 1440px;" vid="amapDemo"
                      :center="center"
-                     :zoom="zoom"
+                     :zoom="5"
                      :events="events">
-                <el-amap-marker :position="position" :content="content" :title="1"></el-amap-marker>
             </el-amap>
         </el-row>
         <el-drawer
@@ -39,26 +38,23 @@
                 </el-row>
             </el-card>
         </el-drawer>
-        <!--        <div class="toolbar">-->
-        <!--            position: [{{ lng }}, {{ lat }}] address: {{ address }}, {{province}}/{{city}}/{{district}}-->
-        <!--        </div>-->
     </el-card>
     </el-container>
 </template>
 
 <script>
-    import VueAMap from 'vue-amap'
-
+    import transnode from "../../api/transnode";
+    import router from "../../router/router";
     export default {
         name: "AddNode",
         data() {
             let self = this;
             return {
-                zoom: 12,
                 center: [121.59996, 31.197646],
                 address: '',
                 province: '',
                 city: '',
+                adcode: '',
                 district: '',
                 drawer: false,
                 direction: 'ttb',
@@ -66,46 +62,50 @@
                     address: '',
                     phone: ''
                 },
+                lng: 0,
+                lat: 0,
                 events: {
                     click(e) {
                         let {lng, lat} = e.lnglat;
                         self.lng = lng;
                         self.lat = lat;
-
                         // 临时添加
                         self.drawer = true;
 
                         // 这里通过高德 SDK 完成。
-                        let geoCoder = new VueAMap.Geocoder({
+                        // eslint-disable-next-line no-undef
+                        let geoCoder = new AMap.Geocoder({
                             radius: 1000,
                             extensions: "all"
                         });
+
                         // 这段代码不起作用
                         geoCoder.getAddress([lng, lat], function (status, result) {
-                            console.log(result);
-                            alert('我真帅');
                             if (status === 'complete' && result.info === 'OK') {
                                 if (result && result.regeocode) {
                                     console.log(result);
-                                    self.address = result.regeocode.formattedAddress;
                                     self.province = result.regeocode.addressComponent.province;
                                     self.city = result.regeocode.addressComponent.city;
+                                    self.adcode = result.regeocode.addressComponent.adcode;
                                     self.district = result.regeocode.addressComponent.district;
                                     self.$nextTick();
                                 }
                             }
                         });
                     }
-                },
-                lng: 0,
-                lat: 0,
-                position: [121.59996, 31.197646],
-                content: '<div style="text-align:center; background-color: hsla(180, 100%, 50%, 0.7); height: 12px; width: 12px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0 0 1px;"></div>'
+                }
             }
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
+                let _this = this;
+                transnode.postNode(this.province + this.city + this.district, this.form.address, this.form.phone, this.lng, this.lat, this.adcode).then(function () {
+                    _this.$message({
+                        type: 'success',
+                        message: '上传网点成功'
+                    });
+                    router.push('/admin/transnode/list')
+                })
             }
         }
     }

@@ -56,9 +56,12 @@
         },
         methods: {
             onSubmit() {
-                console.log(this.form.name);
+                let _this = this;
                 user.postUser(this.form.name, this.form.phone, this.form.gender === '男' ? 1 : 2, this.form.region).then(function () {
-                    alert('发送成功');
+                    _this.$message({
+                        type: 'success',
+                        message: '上传员工成功'
+                    });
                     router.push('/admin/employee/list')
                 })
             },

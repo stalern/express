@@ -12,9 +12,11 @@ export default new Vuex.Store({
     login (state, data) {
       // 变更状态
       this.state.token = data;
+      localStorage.setItem('token', data)
     },
     logout () {
       this.state.token = '';
+      localStorage.clear();
     }
   },
   actions: {

@@ -49,7 +49,7 @@
                 title="包裹运输路线图"
                 :visible.sync="drawer"
                 size="90%">
-            <el-amap style="margin: 20px 20px 20px 20px" :center="center">
+            <el-amap style="margin: 20px 20px 20px 20px" :center="center" :zoom="5">
                 <el-amap-polyline :editable="polyline.editable" :path="polyline.path"
                                   :events="polyline.events" :line-join="polyline.lineJoin"></el-amap-polyline>
             </el-amap>
@@ -89,7 +89,7 @@
             checkExpress() {
                 this.flag = !this.flag;
                 let _this = this;
-                express.getExpress(this.input).then(function (response) {
+                express.getExpressLocation(this.input).then(function (response) {
                     let data = response.data.data;
                     _this.tableData = data;
                     console.log(data);

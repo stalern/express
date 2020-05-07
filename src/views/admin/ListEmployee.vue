@@ -48,11 +48,12 @@
                                     label="操作"
                                     width="200">
                                 <template slot-scope="scope">
-                                    <el-button
-                                            type="warning"
-                                            size="small">
-                                        编辑
-                                    </el-button>
+                                        <el-button
+                                                @click="handleEdit(scope.row.id, scope.row.phoneNumber, scope.row.status, scope.row.name)"
+                                                type="warning"
+                                                size="small">
+                                            编辑
+                                        </el-button>
                                     <el-button
                                             @click.native.prevent="deleteRow(scope.$index, scope.row.id)"
                                             type="danger"
@@ -67,6 +68,28 @@
                 <el-pagination layout="prev, pager, next" :total="total" :current-page="page" :page-size="size"
                                @current-change="currentChange" @prev-click="page=page-1" @next-click="page=page+1">
                 </el-pagination>
+                <el-drawer
+                        :title="form.title"
+                        :visible.sync="drawer"
+                        :direction="direction"
+                        size="20%">
+                    <el-form :inline="true" :model="form" class="demo-form-inline">
+                        <el-form-item label="手机号">
+                            <el-input v-model="form.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="状态">
+                            <el-select v-model="form.status">
+                                <el-option label="工作中" value="2"></el-option>
+                                <el-option label="休息中" value="0"></el-option>
+                                <el-option label="注册中" value="1"></el-option>
+                                <el-option label="管理员" value="100"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="warning" @click="onSubmit">更新</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-drawer>
             </el-card>
         </el-main>
     </el-container>
@@ -80,8 +103,18 @@
             return {
                 total : 0,
                 page: 1,
+                type : 0, // 0是listEmployee， 1是inNode
+                value: '',
                 size: 8,
-                user: []
+                user: [],
+                direction: 'ttb',
+                drawer: false,
+                form: {
+                    id: '',
+                    title: '',
+                    phone: '',
+                    status: ''
+                }
             }
         },
         methods: {
@@ -107,8 +140,29 @@
             },
             currentChange (page) {
                 this.page = page;
-                this.listUser(page, this.size);
+                if (this.type === 0) {
+                    this.listUser(page, this.size);
+                } else {
+                    this.listUserInNode(this.value, page, this.size);
+                }
                 scrollTo(0, 0)
+            },
+            handleEdit(id, phone, status, name) {
+                this.form.phone = phone;
+                this.form.status = status;
+                this.form.id = id;
+                this.form.title = "修改" + name + "的信息";
+                this.drawer = true;
+            },
+            onSubmit() {
+                let _this = this;
+                user.updateUser(this.form.id, this.form.phone, this.form.status).then(function () {
+                    location.reload()
+                    _this.$message({
+                        type: 'success',
+                        message: '更新' + _this.form.title + '信息成功'
+                    });
+                })
             },
             deleteRow(index, userId) {
                 this.user.splice(index, 1);
@@ -125,6 +179,9 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.page = 1;
+                    this.type = 1;
+                    this.value = value;
                     this.listUserInNode(value, this.page, this.size);
                     this.$message({
                         type: 'success',

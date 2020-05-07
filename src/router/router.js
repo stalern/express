@@ -98,9 +98,13 @@ const router = new VueRouter({
 // router.beforeEach((to, from, next) => {
 //     // 获取用户权限信息，为空即没登录，跳转至登录页
 //     if (to.path.includes('/admin')) {
-//         let role = this.store.state.token;
+//         let role = localStorage.getItem('token');
 //         if (role === '') {
-//             next('/login')
+//             next('/login');
+//             this.$message({
+//                 type: 'danger',
+//                 message: '用户未登录'
+//             });
 //         }
 //     }
 //     next()

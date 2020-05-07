@@ -74,7 +74,7 @@ export default {
           if (data[i].x !== null && data[i].y !== null) {
             _this.markers.push({
               position: [data[i].x, data[i].y],
-              title: data[i].region
+              title: data[i].address.length < 5 ? data[i].region : data[i].address
             });
           }
         }

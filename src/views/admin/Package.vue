@@ -86,15 +86,9 @@
                 total: 20,
                 page:2,
                 size:8,
-                packages: [{
-                    name: '王小虎',
-                    status: '已拆包',
-                    sendAdd: '北京市市辖区东城区',
-                    recAdd: '内蒙古自治区呼和浩特市新城区',
-                    num: '2',
-                    beginTime: '2020-04-10 18:13:09',
-                    endTime: '2020-04-10 21:56:58'
-                }]
+                type: 0,
+                value: '',
+                packages: []
             }
         },
         methods: {
@@ -120,7 +114,11 @@
             },
             currentChange (page) {
                 this.page = page;
-                this.listPackage(page, this.size);
+                if (this.type === 1) {
+                    this.listPackage(page, this.size);
+                } else {
+                    this.listPackageInNode(this.value, page, this.size);
+                }
                 scrollTo(0, 0)
             },
             deleteRow(index) {
@@ -131,6 +129,9 @@
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
                 }).then(({ value }) => {
+                    this.page = 1;
+                    this.type = 1;
+                    this.value = value;
                     this.listPackageInNode(value, 1, this.size);
                     this.$message({
                         type: 'success',
@@ -151,7 +152,4 @@
 </script>
 
 <style scoped>
-    .mar {
-        margin-top: 100px;
-    }
 </style>

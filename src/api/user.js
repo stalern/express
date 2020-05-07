@@ -28,7 +28,7 @@ export default {
     },
     logout () {
         return request({
-            url: path + '/out',
+            url: path + '/logout',
             method: 'get'
         })
     },
@@ -41,15 +41,12 @@ export default {
             method: 'post'
         })
     },
-    updateUser (name, phoneNumber, status) {
+    updateUser (id, phoneNumber, status) {
         return request({
-            url: path + '/postUser',
-            method: 'put',
-            data: {
-                'name': name,
-                'phoneNumber': phoneNumber,
-                'status' : status
-            }
+            url: path + '/updateUser?id=' + id +
+                '&phoneNumber=' + phoneNumber +
+                '&status=' + status,
+            method: 'put'
         })
     },
     delete(userId) {
