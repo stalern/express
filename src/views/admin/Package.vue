@@ -83,10 +83,10 @@
         name: "Package",
         data() {
             return {
-                total: 20,
-                page:2,
+                total: 0,
+                page:1,
                 size:8,
-                type: 0,
+                type: 1,
                 value: '',
                 packages: []
             }

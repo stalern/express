@@ -4,8 +4,9 @@
         <el-row>
             <el-amap style="height: 550px; width: 1440px;" vid="amapDemo"
                      :center="center"
-                     :zoom="5"
-                     :events="events">
+                     :zoom="10"
+                     :events="events"
+            :plugin="plugin">
             </el-amap>
         </el-row>
         <el-drawer
@@ -93,7 +94,24 @@
                             }
                         });
                     }
-                }
+                },
+                plugin: [{
+                    pName: 'Geolocation',
+                    events: {
+                        init(o) {
+                            // o 是高德地图定位插件实例
+                            o.getCurrentPosition((status, result) => {
+                                if (result && result.position) {
+                                    self.lng = result.position.lng;
+                                    self.lat = result.position.lat;
+                                    self.center = [self.lng, self.lat];
+                                    self.loaded = true;
+                                    self.$nextTick();
+                                }
+                            });
+                        }
+                    }
+                }]
             }
         },
         methods: {

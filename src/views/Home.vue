@@ -15,7 +15,7 @@
             :visible.sync="drawer"
             :direction="direction"
             size="90%">
-      <el-amap style="margin: 20px 20px 20px 20px" :center="center" :zoom="5">
+      <el-amap style="margin: 20px 20px 20px 20px" :center="center" :zoom="7" :plugin="plugin">
         <el-amap-marker v-for="(marker,index) in markers" :position="marker.position" :content="content"
                         :title="marker.title"
                         :key="index"></el-amap-marker>
@@ -39,12 +39,32 @@ import node from "../api/transnode";
 export default {
   name: 'Home',
   data() {
+    let self = this;
     return {
       drawer: false,
       direction: 'btt',
       center: [113.613, 34.7483],
       content: '<div style="text-align:center; background-color: hsla(112,100%,70%,0.7); height: 6px; width: 6px; border: 1px solid hsl(5,60%,50%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0 0 1px;"></div>',
-      markers: []
+      markers: [],
+      lng: '',
+      lat: '',
+      plugin: [{
+        pName: 'Geolocation',
+        events: {
+          init(o) {
+            // o 是高德地图定位插件实例
+            o.getCurrentPosition((status, result) => {
+              if (result && result.position) {
+                self.lng = result.position.lng;
+                self.lat = result.position.lat;
+                self.center = [self.lng, self.lat];
+                self.loaded = true;
+                self.$nextTick();
+              }
+            });
+          }
+        }
+      }]
     };
   },
   methods: {

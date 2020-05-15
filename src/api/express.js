@@ -49,5 +49,11 @@ export default {
             url: path + '/getExpressById/' + id,
             method: 'get'
         })
+    },
+    getPackage(id) {
+        return request({
+            url: path + '/getPackageById/' + id,
+            method: 'get'
+        })
     }
 }

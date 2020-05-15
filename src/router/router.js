@@ -73,6 +73,11 @@ const routes = [
             }]
     },
     {
+        path: '/admin/order/list/:id',
+        name: 'ListOrder',
+        component: () => import('../views/admin/ListOrder')
+    },
+    {
         path: '/map',
         name: 'Map',
         component: Map

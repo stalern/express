@@ -126,6 +126,7 @@
                     _this.total = data.totalNum;
                     _this.page = data.currPage;
                     _this.user = data.obj;
+                    _this.change();
                 })
             },
             listUserInNode(node, page, size) {
@@ -136,6 +137,7 @@
                     _this.total = data.totalNum;
                     _this.page = data.currPage;
                     _this.user = data.obj;
+                    _this.change();
                 })
             },
             currentChange (page) {
@@ -193,6 +195,29 @@
                         message: '取消输入'
                     });
                 });
+            },
+            change() {
+                let _this = this;
+                for (let i = 0; i < _this.user.length; i ++) {
+                    let st = _this.user[i].status;
+                    if (st === 0) {
+                        _this.user[i].status = '休息中'
+                    } else if (st === 1) {
+                        _this.user[i].status = '注册中'
+                    } else if (st === 2) {
+                        _this.user[i].status = '工作中'
+                    } else {
+                        _this.user[i].status = '管理员'
+                    }
+                    let gen = _this.user[i].gender;
+                    if (gen === 0) {
+                        _this.user[i].gender = '未知';
+                    } else if (gen === 1) {
+                        _this.user[i].gender = '男'
+                    } else {
+                        _this.user[i].gender = '女'
+                    }
+                }
             }
         },
         mounted() {
